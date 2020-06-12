@@ -25,8 +25,8 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("My REST API", "Some custom description of API.", "API TOS", "Terms of service",
-				new Contact("John Doe", "www.example.com", "myeaddress@company.com"), "License of API",
-				"API license URL", Collections.emptyList());
+		return new ApiInfo("This microservice is known as microdb-ws", "It find the available book author and its sub-author", null, null,
+				new Contact(null,null,"sandeep.ejlnoqe@company.com"), null, null,
+				Collections.emptyList());
 	}
 }
