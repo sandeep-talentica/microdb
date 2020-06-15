@@ -15,6 +15,17 @@ public class Data {
 	@Column(name = "colour")
 	private String colour;
 
+	public Data() {
+	}
+
+	public Data(Long id, Long parentId, String name, String colour) {
+		super();
+		this.id = id;
+		this.parentId = parentId;
+		this.name = name;
+		this.colour = colour;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -47,21 +58,9 @@ public class Data {
 		this.colour = colour;
 	}
 
-	public Data() {
-	}
-
-	public Data(Long id, Long parentId, String name, String colour) {
-		
-		this.id = id;
-		this.parentId = parentId;
-		this.name = name;
-		this.colour = colour;
-	}
-
 	@Override
 	public String toString() {
 		return "Data [id=" + id + ", parentId=" + parentId + ", name=" + name + ", colour=" + colour + "]";
 	}
-
 
 }

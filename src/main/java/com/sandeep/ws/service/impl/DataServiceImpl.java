@@ -1,14 +1,14 @@
 package com.sandeep.ws.service.impl;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 import com.sandeep.ws.aop.api.advice.LogMethodParam;
 import com.sandeep.ws.model.Data;
@@ -27,39 +27,45 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public Iterable findAll() {
-		log.info("Finding all data service");
-		Iterable<Data> list = dataRepository.findAll();
-		Map<Long, ArrayList<String>> hashMap = new HashMap<Long, ArrayList<String>>();
-		ArrayList<String> listOfName = null;
 
-		for (Data data : list) {
-
+		Iterable<Data> dbList = dataRepository.findAll();
+		Map<Long, Output> processmap = new HashMap<Long, Output>();
+		Map<Long, Long> parentChildMap = new HashMap<Long, Long>();
+		List<Output> outputList = null;
+		for (Data data : dbList) {
+			// storing item
 			Long parentid = data.getParentId();
+			parentChildMap.put(data.getId(), parentid);
+			String name = data.getName();
+			Output item = processmap.get(data.getId());
+			if (item == null) {
+				item = new Output(name);
+				processmap.put(data.getId(), item);
+			} else
+				item.setName(name);
 
-			if (!hashMap.containsKey(parentid)) {
-				listOfName = new ArrayList<String>();
-				listOfName.add("Name : " + data.getName());
-				hashMap.put(parentid, listOfName);
-			} else {
-				ArrayList<String> arrLst = hashMap.get(parentid);
+			// storing parent
 
-				arrLst.add("Name : " + data.getName());
-				hashMap.put(parentid, arrLst);
-			}
+			if (!processmap.containsKey(parentid))
+				processmap.put(parentid, new Output(""));
+			processmap.get(parentid).subClasses.add(item);
 		}
-		Output output = null;
-		List<Output> listOfOutput = new ArrayList<Output>();
-		for (Data data : list) {
 
-			if (hashMap.containsKey(data.getId())) {
+		outputList = new ArrayList<Output>();
+		for (Entry<Long, Output> processMapEntry : processmap.entrySet()) {
 
-				output = new Output();
-				output.setName(data.getName());
-				output.setSubClass(hashMap.get(data.getId()));
-				listOfOutput.add(output);
-			}
+			Long key = processMapEntry.getKey();
+			Long parentId = parentChildMap.get(key);
+			if (parentId == null)
+				continue;
+			if (parentId == 0)
+				outputList.add(processMapEntry.getValue());
+
 		}
-		return listOfOutput;
+		Iterable<Output> iterable = outputList;
+
+		return iterable;
+
 	}
 
 	@Override
