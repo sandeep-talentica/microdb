@@ -15,6 +15,7 @@ public class MicrodbApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MicrodbApplication.class, args);
+
 	}
 
 }
