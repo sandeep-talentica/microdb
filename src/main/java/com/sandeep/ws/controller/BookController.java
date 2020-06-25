@@ -25,23 +25,28 @@ import lombok.extern.slf4j.Slf4j;
 @Api(value = "onlineBookstore", description = "You can see the author and corresponding sub-authors ")
 public class BookController {
 
-	@Autowired
-	private DataService dataService;
+  @Autowired
+  private DataService dataService;
 
-	@ApiOperation(value = "View a list of all available books", response = Iterable.class)
-	@GetMapping
-	public Iterable findAll() {
+  @Autowired
 
-		log.info("Finding all books");
-		return dataService.findAll();
-	}
-	@ApiOperation(value = "Find book by a particular id", response = Iterable.class)
-	@GetMapping(value = "/{id}")
-	@LogMethodParam
-	public ResponseEntity<Optional<Data>> getById(@PathVariable Long id) {
+  @ApiOperation(value = "View a list of all available books", response = Iterable.class)
+  @GetMapping
+  public Iterable findAll() {
+    jhjkh
 
-		Optional<Data> data = dataService.findById(id);
-		return new ResponseEntity<Optional<Data>>(data, new HttpHeaders(), HttpStatus.OK);
-	}
+    log.info("Finding all books");
+    return dataService.findAll();
+  }
+
+  @ApiOperation(value = "Find book by a particular id", response = Iterable.class)
+  @GetMapping(value = "/{id}")
+  @LogMethodParam
+  public ResponseEntity<Optional<Data>> getById(@PathVariable Long id) {
+
+    Optional<Data> data = dataService.findById(id);
+
+    return new ResponseEntity<Optional<Data>>(data, new HttpHeaders(), HttpStatus.OK);
+  }
 
 }
