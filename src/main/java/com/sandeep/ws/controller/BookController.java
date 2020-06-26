@@ -33,7 +33,6 @@ public class BookController {
   @ApiOperation(value = "View a list of all available books", response = Iterable.class)
   @GetMapping
   public Iterable findAll() {
-    jhjkh
 
     log.info("Finding all books");
     return dataService.findAll();
